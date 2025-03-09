@@ -14,8 +14,8 @@ print(f"n = {n}")
 print(f"phi(n) = {phi}")
 print(f"e = {e}")
 print(f"d = {d}")
-print(f"-> Khóa ký: ({d}, {n})")
-print(f"-> Khóa kiểm thử: ({e}, {n})")
+print(f"-> Khóa ký: {d, n}")
+print(f"-> Khóa kiểm thử: {e, n}")
 
 # Lưu thông tin khóa kiểm thử
 public_key = {
