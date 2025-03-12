@@ -18,8 +18,8 @@ print(f"n = {n}")
 print(f"phi(n) = {phi}")
 print(f"e = {e}")
 print(f"d = {d}")
-print(f"-> Khóa ký (d, n): {d, n}")
-print(f"-> Khóa kiểm thử (e, n): {e, n}")
+print(f"-> Khóa bí mật để ký (d, n): {d, n}")
+print(f"-> Khóa công khai để kiểm thử (e, n): {e, n}")
 
 # Lưu khóa bí mật
 priv_file = "private_key.json"
