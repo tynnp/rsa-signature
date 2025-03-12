@@ -1,35 +1,27 @@
-from RSA_algorithm_sign import *
+from RSA_sign_algorithm import *
 
-input_file = input("Nhập đường dẫn file cần ký: ").strip()
-with open(input_file, 'rb') as f:
-    data = f.read()
-
-p, q, n, phi, e, d = generate_keys(min_prime = 100000000000, max_prime = 700000000000)
-
+# Lấy nội dung file cần ký số
 print("-" * 100)
-print("Thông tin khóa:")
-print(f"p = {p}")
-print(f"q = {q}")
-print(f"n = {n}")
-print(f"phi(n) = {phi}")
-print(f"e = {e}")
-print(f"d = {d}")
-print(f"-> Khóa ký: {d, n}")
-print(f"-> Khóa kiểm thử: {e, n}")
+file_path = input("Nhập đường dẫn đến file cần ký số: ")
+with open(file_path, "rb") as f:
+    plaintext_bytes = f.read()
 
-# Lưu thông tin khóa kiểm thử
-public_key = {
-    "e": e, 
-    "n": n, 
+# Lấy nội dung khóa bí mật để ký
+priv_file = "private_key.json"
+with open(priv_file, "r") as f:
+    private_key = json.load(f)
+
+d = private_key["d"]
+n = private_key["n"]
+
+# Thực hiện ký số và tạo chữ ký
+rsa_signature = sign(plaintext_bytes, d, n)
+signature = {
+    "signature": rsa_signature
 }
 
-with open("public_key.txt", 'w') as f:
-    for k, v in public_key.items():
-        f.write(f"{k}:{v}\n")
-print("Thông tin khóa kiểm thử được lưu tại public_key.txt")
-
-signature = sign(data, d, n)
-with open("signature.txt", 'w') as f:
-    f.write(str(signature))
-print("Đã ký file và lưu chữ ký vào signature.txt")
-print("-" * 100)
+# Ghi lại chữ ký số
+signature_file = "signature.json"
+with open(signature_file, "w") as f:
+    json.dump(signature, f, indent=4)
+print(f"file chữ ký số được lưu tại {signature_file}", "-" * 100, sep='\n')

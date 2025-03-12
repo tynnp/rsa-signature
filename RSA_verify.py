@@ -1,22 +1,29 @@
-from RSA_algorithm_sign import *
+from RSA_sign_algorithm import *
 
-input_file = input("Nhập đường dẫn file cần ký: ").strip()
-with open(input_file, 'rb') as f:
-    data = f.read()
+# Lấy nội dung chữ ký số
+print("-" * 100)
+signature_file = input("Nhập đường dẫn đến file chữ ký số: ")
+with open(signature_file, "r") as f:
+    signature = json.load(f)
+rsa_signature = signature["signature"]
 
-public_key = {}
-with open("public_key.txt", 'r') as f:
-    for line in f:
-        k, v = line.strip().split(':')
-        public_key[k] = v
+# Lấy nội dung file cần kiểm thử chữ ký số
+file_path = input("Nhập đường dẫn đến file cần kiểm thử chữ ký số: ")
+with open(file_path, "rb") as f:
+    plaintext_bytes = f.read()
 
-n = int(public_key["n"])
-e = int(public_key["e"])
+# Lấy nội dung khóa công khai để kiểm thử
+pub_file = "public_key.json"
+with open(pub_file, "r") as f:
+    public_key = json.load(f)
 
-with open("signature.txt", 'r') as f:
-    signature = int(f.read().strip())
+e = public_key["e"]
+n = public_key["n"]
 
-if verify(data, signature, e, n):
-    print("Chữ ký HỢP LỆ!")
+# Thực hiện kiểm thử chữ ký
+result = verify(plaintext_bytes, rsa_signature, e, n)
+if result:  
+    print("Chữ ký hợp lệ!")
 else:
-    print("Chữ ký KHÔNG hợp lệ!")
+    print("Chữ ký không hợp lệ!")
+print("-" * 100)

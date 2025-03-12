@@ -1,6 +1,7 @@
 import random
 import math
 import os
+import json
 
 # Kiểm tra số nguyên tố
 def is_prime(n):
@@ -50,15 +51,15 @@ def generate_keys(min_prime=10000, max_prime=70000):
     return p, q, n, phi, e, d
 
 # Ký trực tiếp tính m^d mod n
-def sign(m, d, n):
-    m_int = int.from_bytes(m, 'big')
-    sig = pow(m_int, d, n)
-    return sig
+def sign(plaintext_bytes, d, n):
+    m = int.from_bytes(plaintext_bytes, byteorder="big")
+    rsa_signature = pow(m, d, n)
+    return rsa_signature
 
 # Kiểm tra chữ ký  
-def verify(m, sig, e, n):
-    m_int = int.from_bytes(m, 'big')
-    m_check = pow(sig, e, n)
-    print(f"m_int = {m_int}")
-    print(f"m_check = {m_check}")
-    return m_check == m_int
+def verify(plaintext_bytes, rsa_signature, e, n):
+    m = int.from_bytes(plaintext_bytes, byteorder="big")
+    a = pow(rsa_signature, e, n)
+    print(f"m = {m}")
+    print(f"a = {a}")
+    return m == a
